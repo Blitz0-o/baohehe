@@ -3,13 +3,16 @@ import {parse} from 'url'
 
 let sumCallCount = 0;
 let history = [];
+
 const server = http.createServer((req, res) => {
   const parseURL = parse(req.url, true);
   const {pathname} = parseURL;
   if(req.method === 'POST' && pathname === '/sum') {
     let body = '';
     req.on('data', part => {
+
       body += part.toString();
+
     });
     req.on('end', () => {
       try{
@@ -48,6 +51,7 @@ const server = http.createServer((req, res) => {
         });
       }
     });
+
   }else if(req.method ==='GET' && pathname === '/sum-count'){
     const output = {totalCalls: sumCallCount}
     res.writeHead(200, {'Content-Type': 'application/json'});
@@ -57,6 +61,7 @@ const server = http.createServer((req, res) => {
       input: {},
       output
     });
+    
   }else if(req.method === 'GET' && pathname === '/get-date') {
       const now = new Date().toISOString();
       const output = {currentTime: now};
